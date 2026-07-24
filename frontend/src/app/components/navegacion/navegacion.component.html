@@ -1,0 +1,41 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light px-3">
+  <div class="container-fluid">
+    <!-- Menú Principal: Sistema -->
+    <button mat-button [matMenuTriggerFor]="menuSistema">Sistema</button>
+
+    <mat-menu #menuSistema="matMenu">
+      <button mat-menu-item [matMenuTriggerFor]="subMenuEmpleados">Empleados</button>
+      <button mat-menu-item [matMenuTriggerFor]="subMenuOpcion2">Opcion2</button>
+    </mat-menu>
+
+    <!-- Submenú para Empleados -->
+    <mat-menu #subMenuEmpleados="matMenu">
+      <a mat-menu-item routerLink="/empleado">Ver Empleados</a>
+      <a mat-menu-item href="#">html2</a>
+      <a mat-menu-item href="#">html3</a>
+      <a mat-menu-item href="#">html4</a>
+      <a mat-menu-item href="#">html5</a>
+    </mat-menu>
+
+    <!-- Submenú para Opcion 2 -->
+    <mat-menu #subMenuOpcion2="matMenu">
+      <a mat-menu-item href="#">html1</a>
+      <a mat-menu-item href="#">html2</a>
+      <a mat-menu-item href="#">html3</a>
+      <a mat-menu-item href="#">html4</a>
+      <a mat-menu-item href="#">html5</a>
+    </mat-menu>
+
+    <!-- Menú Principal: Consultas -->
+    <button mat-button [matMenuTriggerFor]="menuConsultas">Consultas</button>
+
+    <mat-menu #menuConsultas="matMenu">
+      <button mat-menu-item [matMenuTriggerFor]="subMenuConsultasOpcion1">Opcion1</button>
+    </mat-menu>
+
+    <mat-menu #subMenuConsultasOpcion1="matMenu">
+      <a mat-menu-item routerLink="/empleado">Empleados</a>
+    </mat-menu>
+
+  </div>
+</nav>

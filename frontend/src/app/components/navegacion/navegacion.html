@@ -1,0 +1,15 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light px-3">
+  <div class="container-fluid">
+    <!-- Botón del Menú Principal -->
+    <button mat-button [matMenuTriggerFor]="menuSistema">Sistema</button>
+
+    <mat-menu #menuSistema="matMenu">
+      <button mat-menu-item [matMenuTriggerFor]="subMenuEmpleados">Empleados</button>
+    </mat-menu>
+
+    <!-- Submenú que lleva a tu lista de empleados -->
+    <mat-menu #subMenuEmpleados="matMenu">
+      <a mat-menu-item routerLink="/empleado">Ver Empleados</a>
+    </mat-menu>
+  </div>
+</nav>
