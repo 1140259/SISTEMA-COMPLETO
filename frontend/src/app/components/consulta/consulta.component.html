@@ -1,0 +1,238 @@
+<div class="container-fluid bg-primary p-2 mb-3">
+
+  <div class="d-flex justify-content-end">
+
+    <a routerLink="/inicio" class="btn btn-light me-2">
+      🏠 Inicio
+    </a>
+
+    <a routerLink="/reportes" class="btn btn-warning me-2">
+      📊 Reportes
+    </a>
+
+    <a routerLink="/" class="btn btn-danger">
+      🚪 Salir
+    </a>
+
+  </div>
+
+</div>
+<div class="container-fluid mt-4">
+
+  <div class="card shadow">
+
+    <div class="card-header bg-primary text-white">
+      <h3 class="mb-0">Consulta Médica</h3>
+    </div>
+
+    <div class="card-body">
+
+      <div class="row">
+
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Paciente</label>
+          <select
+            class="form-select"
+            [(ngModel)]="consulta.ID_PACIENTE">
+
+            <option value="">Seleccione...</option>
+
+            <option
+              *ngFor="let p of pacientes"
+              [value]="p.ID_PACIENTE">
+
+              {{ p.NOMBRES }} {{ p.APELLIDOS }}
+
+            </option>
+
+          </select>
+        </div>
+
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Médico</label>
+
+          <select
+            class="form-select"
+            [(ngModel)]="consulta.ID_MEDICO">
+
+            <option value="">Seleccione...</option>
+
+            <option
+              *ngFor="let m of medicos"
+              [value]="m.ID_MEDICO">
+
+              {{ m.NOMBRES }} {{ m.APELLIDOS }}
+
+            </option>
+
+          </select>
+
+        </div>
+
+        <div class="col-md-4 mb-3">
+
+          <label class="form-label">Fecha</label>
+
+          <input
+            type="datetime-local"
+            class="form-control"
+            [(ngModel)]="consulta.FECHA">
+
+        </div>
+
+        <div class="col-md-12 mb-3">
+
+          <label class="form-label">Motivo de Consulta</label>
+
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="consulta.MOTIVO_CONSULTA">
+
+        </div>
+
+        <div class="col-md-6 mb-3">
+
+          <label class="form-label">Diagnóstico</label>
+
+          <textarea
+            rows="3"
+            class="form-control"
+            [(ngModel)]="consulta.DIAGNOSTICO"></textarea>
+
+        </div>
+
+        <div class="col-md-6 mb-3">
+
+          <label class="form-label">Tratamiento</label>
+
+          <textarea
+            rows="3"
+            class="form-control"
+            [(ngModel)]="consulta.TRATAMIENTO"></textarea>
+
+        </div>
+
+        <div class="col-md-12 mb-3">
+
+          <label class="form-label">Observaciones</label>
+
+          <textarea
+            rows="3"
+            class="form-control"
+            [(ngModel)]="consulta.OBSERVACIONES"></textarea>
+
+        </div>
+
+      </div>
+
+      <button
+        class="btn btn-success me-2"
+        (click)="saveConsulta()">
+
+        {{ consulta.ID_CONSULTA ? 'Actualizar' : 'Guardar' }}
+
+      </button>
+
+      <button
+        class="btn btn-secondary"
+        (click)="limpiarFormulario()">
+
+        Nuevo
+
+      </button>
+
+    </div>
+
+  </div>
+
+  <div class="card shadow mt-4">
+
+    <div class="card-header bg-dark text-white">
+
+      <h4 class="mb-0">Listado de Consultas</h4>
+
+    </div>
+
+    <div class="card-body">
+
+      <div class="mb-3">
+
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Buscar consulta..."
+          [(ngModel)]="filtroConsulta">
+
+      </div>
+
+      <table class="table table-bordered table-striped">
+
+        <thead class="table-dark">
+
+          <tr>
+
+            <th>ID</th>
+            <th>Paciente</th>
+            <th>Médico</th>
+            <th>Diagnóstico</th>
+            <th>Fecha</th>
+            <th>Acciones</th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          <tr *ngFor="let c of consultasFiltradas">
+
+            <td>{{ c.ID_CONSULTA }}</td>
+
+            <td>
+              {{ c.PACIENTE_NOMBRES }}
+              {{ c.PACIENTE_APELLIDOS }}
+            </td>
+
+            <td>
+              {{ c.MEDICO_NOMBRES }}
+              {{ c.MEDICO_APELLIDOS }}
+            </td>
+
+            <td>{{ c.DIAGNOSTICO }}</td>
+
+            <td>
+              {{ c.FECHA | date:'yyyy-MM-dd HH:mm' }}
+            </td>
+
+            <td>
+
+              <button
+                class="btn btn-warning btn-sm me-1"
+                (click)="editarConsulta(c)">
+
+                Editar
+
+              </button>
+
+              <button
+                class="btn btn-danger btn-sm"
+                (click)="eliminarConsulta(c.ID_CONSULTA)">
+
+                Eliminar
+
+              </button>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</div>

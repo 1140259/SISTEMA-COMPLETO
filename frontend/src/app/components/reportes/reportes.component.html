@@ -1,0 +1,312 @@
+<div class="container-fluid bg-primary p-2 mb-3 no-print">
+
+  <div class="d-flex justify-content-end">
+
+    <a
+      routerLink="/inicio"
+      class="btn btn-light me-2">
+
+      🏠 Inicio
+
+    </a>
+
+    <a
+      routerLink="/receta"
+      class="btn btn-warning me-2">
+
+      💊 Recetas
+
+    </a>
+
+    <button
+      class="btn btn-success me-2"
+      (click)="imprimir()">
+
+      🖨️ Imprimir
+
+    </button>
+
+    <a
+      routerLink="/"
+      class="btn btn-danger">
+
+      🚪 Salir
+
+    </a>
+
+  </div>
+
+<div class="container-fluid mt-4">
+
+  <div class="card shadow no-print">
+
+    <div class="card-header bg-primary text-white">
+
+      <h3 class="mb-0">Reportes Generales</h3>
+
+    </div>
+
+    <div class="card-body">
+
+      <div class="row text-center">
+
+        <div class="col-md-2 mb-3">
+
+          <div class="resumen-card bg-primary text-white">
+            <h5>Pacientes</h5>
+            <h2>{{ pacientes.length }}</h2>
+          </div>
+
+        </div>
+
+        <div class="col-md-2 mb-3">
+
+          <div class="resumen-card bg-success text-white">
+            <h5>Médicos</h5>
+            <h2>{{ medicos.length }}</h2>
+          </div>
+
+        </div>
+
+        <div class="col-md-2 mb-3">
+
+          <div class="resumen-card bg-info text-white">
+            <h5>Consultas</h5>
+            <h2>{{ consultas.length }}</h2>
+          </div>
+
+        </div>
+
+        <div class="col-md-2 mb-3">
+
+          <div class="resumen-card bg-warning text-dark">
+            <h5>Recetas</h5>
+            <h2>{{ recetas.length }}</h2>
+          </div>
+
+        </div>
+
+        <div class="col-md-2 mb-3">
+
+          <div class="resumen-card bg-dark text-white">
+            <h5>Citas</h5>
+            <h2>{{ citas.length }}</h2>
+          </div>
+
+        </div>
+
+        <div class="col-md-2 mb-3">
+
+          <div class="resumen-card bg-danger text-white">
+            <h5>Pendientes</h5>
+            <h2>{{ citasPendientes.length }}</h2>
+          </div>
+
+        </div>
+
+      </div>
+
+      <hr>
+
+      <div class="row">
+
+        <div class="col-md-8">
+
+          <button
+            class="btn btn-outline-primary me-2 mb-2"
+            (click)="seleccionarReporte('pacientes')">
+
+            Pacientes
+
+          </button>
+
+          <button
+            class="btn btn-outline-success me-2 mb-2"
+            (click)="seleccionarReporte('medicos')">
+
+            Médicos
+
+          </button>
+
+          <button
+            class="btn btn-outline-info me-2 mb-2"
+            (click)="seleccionarReporte('consultas')">
+
+            Consultas
+
+          </button>
+
+          <button
+            class="btn btn-outline-warning me-2 mb-2"
+            (click)="seleccionarReporte('recetas')">
+
+            Recetas
+
+          </button>
+
+          <button
+            class="btn btn-outline-dark me-2 mb-2"
+            (click)="seleccionarReporte('citas')">
+
+            Citas
+
+          </button>
+
+        </div>
+
+        <div class="col-md-4 text-end">
+
+          <button
+            class="btn btn-primary"
+            (click)="imprimir()">
+
+            Imprimir Reporte
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div id="areaReporte" class="card shadow mt-4">
+
+    <div class="card-header bg-dark text-white">
+
+      <h4 class="mb-0">
+
+        Reporte de {{ tipoReporte | titlecase }}
+
+      </h4>
+
+    </div>
+
+    <div class="card-body">
+
+      <div class="mb-3 no-print">
+
+        <input
+          class="form-control"
+          placeholder="Buscar en reporte..."
+          [(ngModel)]="filtro">
+
+      </div>
+
+      <div class="table-responsive">
+
+        <table class="table table-bordered table-striped">
+
+          <thead class="table-dark">
+
+            <tr *ngIf="tipoReporte === 'pacientes'">
+              <th>ID</th>
+              <th>Documento</th>
+              <th>Paciente</th>
+              <th>Teléfono</th>
+              <th>Correo</th>
+            </tr>
+
+            <tr *ngIf="tipoReporte === 'medicos'">
+              <th>ID</th>
+              <th>Médico</th>
+              <th>Especialidad</th>
+              <th>Teléfono</th>
+              <th>Estado</th>
+            </tr>
+
+            <tr *ngIf="tipoReporte === 'consultas'">
+              <th>ID</th>
+              <th>Fecha</th>
+              <th>Paciente</th>
+              <th>Médico</th>
+              <th>Diagnóstico</th>
+            </tr>
+
+            <tr *ngIf="tipoReporte === 'recetas'">
+              <th>ID</th>
+              <th>Consulta</th>
+              <th>Fecha</th>
+              <th>Indicaciones</th>
+            </tr>
+
+            <tr *ngIf="tipoReporte === 'citas'">
+              <th>ID</th>
+              <th>Fecha</th>
+              <th>Hora</th>
+              <th>Paciente</th>
+              <th>Médico</th>
+              <th>Estado</th>
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            <tr *ngFor="let item of datosReporte">
+
+              <ng-container *ngIf="tipoReporte === 'pacientes'">
+                <td>{{ item.ID_PACIENTE }}</td>
+                <td>{{ item.NRO_DOCUMENTO }}</td>
+                <td>{{ item.NOMBRES }} {{ item.APELLIDOS }}</td>
+                <td>{{ item.TELEFONO }}</td>
+                <td>{{ item.CORREO }}</td>
+              </ng-container>
+
+              <ng-container *ngIf="tipoReporte === 'medicos'">
+                <td>{{ item.ID_MEDICO }}</td>
+                <td>{{ item.NOMBRES }} {{ item.APELLIDOS }}</td>
+                <td>{{ item.ESPECIALIDAD }}</td>
+                <td>{{ item.TELEFONO }}</td>
+                <td>{{ item.ESTADO }}</td>
+              </ng-container>
+
+              <ng-container *ngIf="tipoReporte === 'consultas'">
+                <td>{{ item.ID_CONSULTA }}</td>
+                <td>{{ item.FECHA | date:'yyyy-MM-dd' }}</td>
+                <td>{{ item.PACIENTE_NOMBRES }} {{ item.PACIENTE_APELLIDOS }}</td>
+                <td>{{ item.MEDICO_NOMBRES }} {{ item.MEDICO_APELLIDOS }}</td>
+                <td>{{ item.DIAGNOSTICO }}</td>
+              </ng-container>
+
+              <ng-container *ngIf="tipoReporte === 'recetas'">
+                <td>{{ item.ID_RECETA }}</td>
+                <td>{{ item.ID_CONSULTA }}</td>
+                <td>{{ item.FECHA_RECETA | date:'yyyy-MM-dd' }}</td>
+                <td>{{ item.INDICACIONES }}</td>
+              </ng-container>
+
+              <ng-container *ngIf="tipoReporte === 'citas'">
+                <td>{{ item.ID_CITA }}</td>
+                <td>{{ item.FECHA | date:'yyyy-MM-dd' }}</td>
+                <td>{{ item.HORA }}</td>
+                <td>{{ item.PACIENTE_NOMBRES }} {{ item.PACIENTE_APELLIDOS }}</td>
+                <td>{{ item.MEDICO_NOMBRES }} {{ item.MEDICO_APELLIDOS }}</td>
+                <td>{{ item.ESTADO }}</td>
+              </ng-container>
+
+            </tr>
+
+            <tr *ngIf="datosReporte.length === 0">
+
+              <td colspan="10" class="text-center text-muted">
+
+                No hay datos para mostrar
+
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

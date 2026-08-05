@@ -1,0 +1,126 @@
+<div class="container-fluid bg-primary p-2 mb-3">
+
+  <div class="d-flex justify-content-end">
+
+    <a routerLink="/inicio" class="btn btn-light me-2">
+      🏠 Inicio
+    </a>
+
+    <a routerLink="/reportes" class="btn btn-warning me-2">
+      📊 Reportes
+    </a>
+
+    <a routerLink="/" class="btn btn-danger">
+      🚪 Salir
+    </a>
+
+  </div>
+
+</div>
+<div class="container mt-4">
+
+  <div class="card shadow">
+
+    <div class="card-header bg-success text-white">
+
+      <h3>Diagnóstico de Paciente</h3>
+
+    </div>
+
+    <div class="card-body">
+
+      <label>Buscar Paciente</label>
+
+      <input
+        class="form-control"
+        [(ngModel)]="criterio"
+        (input)="buscarAutomatico()"
+        placeholder="Escriba el nombre del paciente">
+
+      <div
+        *ngIf="sugerencias.length > 0"
+        class="list-group mt-2">
+
+        <button
+          type="button"
+          class="list-group-item list-group-item-action"
+          *ngFor="let item of sugerencias"
+          (click)="seleccionarPaciente(item)">
+
+          {{ item.PACIENTE_NOMBRES }}
+          {{ item.PACIENTE_APELLIDOS }}
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <br>
+
+  <div
+    *ngIf="resultado"
+    class="card shadow">
+
+    <div class="card-header bg-info text-white">
+
+      Información del Paciente
+
+    </div>
+
+    <div class="card-body">
+
+      <p>
+        <strong>Paciente:</strong>
+        {{ resultado.PACIENTE_NOMBRES }}
+        {{ resultado.PACIENTE_APELLIDOS }}
+      </p>
+
+      <p>
+        <strong>Documento:</strong>
+        {{ resultado.NRO_DOCUMENTO }}
+      </p>
+
+      <p>
+        <strong>Médico:</strong>
+        {{ resultado.MEDICO_NOMBRES }}
+        {{ resultado.MEDICO_APELLIDOS }}
+      </p>
+
+      <p>
+        <strong>Especialidad:</strong>
+        {{ resultado.ESPECIALIDAD }}
+      </p>
+
+      <p>
+        <strong>Fecha:</strong>
+        {{ resultado.FECHA }}
+      </p>
+
+      <p>
+        <strong>Motivo:</strong>
+        {{ resultado.MOTIVO_CONSULTA }}
+      </p>
+
+      <p>
+        <strong>Diagnóstico:</strong>
+        {{ resultado.DIAGNOSTICO }}
+      </p>
+
+      <p>
+        <strong>Tratamiento:</strong>
+        {{ resultado.TRATAMIENTO }}
+      </p>
+
+      <p>
+        <strong>Observaciones:</strong>
+        {{ resultado.OBSERVACIONES }}
+      </p>
+
+    </div>
+
+  </div>
+
+</div>

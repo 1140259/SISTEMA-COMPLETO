@@ -1,36 +1,217 @@
-<div class="container mt-4">
-  <h2>Lista de Empleados</h2>
+<div class="container-fluid bg-primary p-2 mb-3">
 
-  <table class="table table-striped table-bordered mt-3">
+  <div class="d-flex justify-content-end">
+
+    <a
+      routerLink="/inicio"
+      class="btn btn-light me-2">
+
+      🏠 Inicio
+
+    </a>
+
+    <a
+      routerLink="/reportes"
+      class="btn btn-warning me-2">
+
+      📊 Reportes
+
+    </a>
+
+    <a
+      routerLink="/"
+      class="btn btn-danger">
+
+      🚪 Salir
+
+    </a>
+
+  </div>
+
+</div>
+<div class="container mt-4">
+
+  <h2 class="mb-4">Gestion de Empleados</h2>
+
+  <div class="card mb-4">
+    <div class="card-body">
+
+      <div class="row">
+
+        <div class="col-md-3 mb-3">
+          <label class="form-label">Sexo</label>
+
+          <select
+            class="form-control"
+            [(ngModel)]="user.idsexo"
+            name="idsexo">
+
+            <option value="">Seleccione...</option>
+
+            <option
+              *ngFor="let sexo of SexoList"
+              [value]="sexo.ID_SEXO">
+
+              {{ sexo.SEXO }}
+
+            </option>
+
+          </select>
+        </div>
+
+        <div class="col-md-3 mb-3">
+          <label class="form-label">Estado Civil</label>
+
+          <select
+            class="form-control"
+            [(ngModel)]="user.idestadocivil"
+            name="idestadocivil">
+
+            <option value="">Seleccione...</option>
+
+            <option
+              *ngFor="let estado of EstadoCivilList"
+              [value]="estado.ID_ESTADOCIVIL">
+
+              {{ estado.ESTADOCIVIL }}
+
+            </option>
+
+          </select>
+        </div>
+
+        <div class="col-md-3 mb-3">
+          <label class="form-label">Nombre</label>
+
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="user.nombre"
+            name="nombre">
+        </div>
+
+        <div class="col-md-3 mb-3">
+          <label class="form-label">Apellido</label>
+
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="user.apellido"
+            name="apellido">
+        </div>
+
+        <div class="col-md-3 mb-3">
+          <label class="form-label">Fecha Contrato</label>
+
+          <input
+            type="date"
+            class="form-control"
+            [(ngModel)]="user.fechacontrato"
+            name="fechacontrato">
+        </div>
+
+      </div>
+
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="saveUser()">
+        Guardar Empleado
+      </button>
+
+      <button
+        type="button"
+        class="btn btn-secondary ms-2"
+        (click)="limpiarFormulario()">
+        Nuevo
+      </button>
+
+    </div>
+  </div>
+
+  <h3>Lista de Empleados</h3>
+<div class="mb-3">
+
+  <input
+    type="text"
+    class="form-control"
+    placeholder="Digite el empleado que desea buscar"
+    [(ngModel)]="filterPost">
+
+</div>
+  <button
+    type="button"
+    class="btn btn-dark me-2"
+    (click)="openPDF()">
+    Descargar PDF
+  </button>
+
+  <button
+    type="button"
+    class="btn btn-success"
+    (click)="exportToExcel()">
+    Exportar Excel
+  </button>
+
+  <br><br>
+
+  <table
+    class="table table-bordered table-striped"
+    id="tabla">
+
     <thead>
       <tr>
         <th>ID</th>
         <th>SEXO</th>
-        <th>Nombre</th>
-        <th>Apellido</th>
+        <th>ESTADO CIVIL</th>
+        <th>NOMBRE</th>
+        <th>APELLIDO</th>
         <th>FECHA CONTRATO</th>
-
+        <th>ACCIONES</th>
       </tr>
     </thead>
+
     <tbody>
-      <tr *ngFor="let emp of empleados">
-        <td>{{ emp.ID_SEXO}}</td>
+
+      <tr *ngFor="let emp of empleados | filterempleado:filterPost">
+
         <td>{{ emp.ID_EMPLEADO }}</td>
+        <td>{{ emp.SEXO }}</td>
+        <td>{{ emp.ESTADOCIVIL }}</td>
         <td>{{ emp.NOMBRES }}</td>
         <td>{{ emp.APELLIDOS }}</td>
         <td>{{ emp.FECHA_CONTRATO | date:'yyyy-MM-dd' }}</td>
+
         <td>
-          <button class="btn btn-danger btn-sm" (click)="eliminar(emp.ID_EMPLEADO)">
+
+          <button
+            type="button"
+            class="btn btn-warning btn-sm me-1"
+            (click)="editar(emp)">
+            Editar
+          </button>
+
+          <button
+            type="button"
+            class="btn btn-danger btn-sm"
+            (click)="eliminar(emp.ID_EMPLEADO)">
             Eliminar
           </button>
+
         </td>
+
       </tr>
 
       <tr *ngIf="empleados.length === 0">
-        <td colspan="4" class="text-center text-muted py-3">
-          No hay empleados registrados...
+
+        <td colspan="7" class="text-center text-muted">
+          No hay empleados registrados
         </td>
+
       </tr>
+
     </tbody>
+
   </table>
+
 </div>

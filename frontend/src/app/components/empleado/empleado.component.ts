@@ -1,85 +1,232 @@
-import { Component, OnInit, Inject, PLATFORM_ID, ChangeDetectorRef } from '@angular/core';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { EmpleadoService } from './empleado.service';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+import * as XLSX from 'xlsx';
+
+import { DataService } from '../../../services/data.service';
+import { FilterempleadoPipe } from '../../pipes/filterempleado-pipe';
 @Component({
   selector: 'app-empleado',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    FilterempleadoPipe
+  ],
   templateUrl: './empleado.component.html',
-  styleUrl: './empleado.component.css'
+  styleUrls: ['./empleado.component.css']
 })
+
 export class EmpleadoComponent implements OnInit {
+
   empleados: any[] = [];
 
+  SexoList: any[] = [];
+
+  EstadoCivilList: any[] = [];
+
+  name = 'Empleados.xlsx';
+
+  filterPost = '';
+
+  user: any = {
+    id: null,
+    idsexo: '',
+    idestadocivil: '',
+    nombre: '',
+    apellido: '',
+    fechacontrato: ''
+  };
+
   constructor(
-    private empleadoService: EmpleadoService,
-    private cdr: ChangeDetectorRef,
-    @Inject(PLATFORM_ID) private platformId: Object
+    private dataService: DataService,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
-    console.log('🚀 EL COMPONENTE SE ESTÁ INICIALIZANDO');
-    this.obtenerEmpleados();
+    this.getEmpleados();
+    this.getDropListSexo();
+    this.getDropListEstadoCivil();
   }
 
-  obtenerEmpleados() {
-    this.empleadoService.getEmpleados().subscribe({
+  getEmpleados(): void {
+    this.dataService.getAll('empleados').subscribe({
       next: (res: any) => {
-        console.log('LO QUE RESPONDE EL BACKEND ES:', res);
-
-        if (Array.isArray(res)) {
-          this.empleados = res;
-        } else if (res && Array.isArray(res.data)) {
-          this.empleados = res.data;
-        } else if (res && Array.isArray(res.recordset)) {
-          this.empleados = res.recordset;
-        } else {
-          this.empleados = [];
-        }
+        this.empleados = [...res];
         this.cdr.detectChanges();
       },
       error: (err: any) => {
-        console.error('Error al conectar con la API:', err);
+        console.error('ERROR API EMPLEADOS:', err);
       }
     });
   }
 
-  agregarEmpleado(nuevoEmpleado: any) {
-    this.empleadoService.addEmpleado(nuevoEmpleado).subscribe({
+  getDropListSexo(): void {
+    this.dataService.getAll('sexos').subscribe({
       next: (res: any) => {
-        console.log('Empleado agregado con éxito', res);
-        this.obtenerEmpleados();
+        this.SexoList = [...res];
+        this.cdr.detectChanges();
       },
       error: (err: any) => {
-        console.error('Error al agregar empleado:', err);
+        console.error('ERROR API SEXOS:', err);
       }
     });
   }
 
-  actualizarEmpleado(id: any, empleadoModificado: any) {
-    this.empleadoService.updateEmpleado(id, empleadoModificado).subscribe({
+  getDropListEstadoCivil(): void {
+    this.dataService.getAll('estadociviles').subscribe({
       next: (res: any) => {
-        console.log('Empleado actualizado con éxito', res);
-        this.obtenerEmpleados();
+        this.EstadoCivilList = [...res];
+        this.cdr.detectChanges();
       },
       error: (err: any) => {
-        console.error('Error al actualizar empleado:', err);
+        console.error('ERROR API ESTADO CIVIL:', err);
       }
     });
   }
 
-  eliminar(id: any) {
-    if (confirm('¿Estás seguro de que deseas eliminar este empleado?')) {
-      this.empleadoService.deleteEmpleado(id).subscribe({
-        next: (res: any) => {
-          console.log('Empleado eliminado correctamente', res);
-          this.obtenerEmpleados();
+  saveUser(): void {
+
+    const datos = {
+      idsexo: this.user.idsexo,
+      idestadocivil: this.user.idestadocivil,
+      nombre: this.user.nombre,
+      apellido: this.user.apellido,
+      fechacontrato: this.user.fechacontrato
+    };
+
+    if (this.user.id) {
+
+      this.dataService.update(
+        this.user.id,
+        datos,
+        'empleados'
+      ).subscribe({
+        next: () => {
+          this.getEmpleados();
+          this.limpiarFormulario();
         },
         error: (err: any) => {
-          console.error('Error al eliminar el empleado:', err);
+          console.error(err);
         }
       });
+
+    } else {
+
+      this.dataService.save(
+        datos,
+        'empleados'
+      ).subscribe({
+        next: () => {
+          this.getEmpleados();
+          this.limpiarFormulario();
+        },
+        error: (err: any) => {
+          console.error(err);
+        }
+      });
+
     }
+
   }
+
+  editar(emp: any): void {
+
+    this.user = {
+      id: emp.ID_EMPLEADO,
+      idsexo: emp.ID_SEXO,
+      idestadocivil: emp.ID_ESTADOCIVIL,
+      nombre: emp.NOMBRES,
+      apellido: emp.APELLIDOS,
+      fechacontrato: emp.FECHA_CONTRATO
+        ? new Date(emp.FECHA_CONTRATO).toISOString().substring(0, 10)
+        : ''
+    };
+
+    this.cdr.detectChanges();
+
+  }
+
+  eliminar(id: string | number): void {
+
+    this.dataService.delete(id, 'empleados').subscribe({
+      next: () => {
+        this.getEmpleados();
+      },
+      error: (err: any) => {
+        console.error(err);
+      }
+    });
+
+  }
+
+  limpiarFormulario(): void {
+
+    this.user = {
+      id: null,
+      idsexo: '',
+      idestadocivil: '',
+      nombre: '',
+      apellido: '',
+      fechacontrato: ''
+    };
+
+    this.cdr.detectChanges();
+
+  }
+
+  openPDF(): void {
+
+    const DATA: any = document.getElementById('tabla');
+
+    html2canvas(DATA).then((canvas) => {
+
+      const fileWidth = 208;
+      const fileHeight =
+        (canvas.height * fileWidth) / canvas.width;
+
+      const FILEURI =
+        canvas.toDataURL('image/png');
+
+      const PDF = new jsPDF('p', 'mm', 'a4');
+
+      PDF.addImage(
+        FILEURI,
+        'PNG',
+        0,
+        0,
+        fileWidth,
+        fileHeight
+      );
+
+      PDF.save('empleados.pdf');
+
+    });
+
+  }
+
+  exportToExcel(): void {
+
+    const element =
+      document.getElementById('tabla');
+
+    const worksheet: XLSX.WorkSheet =
+      XLSX.utils.table_to_sheet(element);
+
+    const book: XLSX.WorkBook =
+      XLSX.utils.book_new();
+
+    XLSX.utils.book_append_sheet(
+      book,
+      worksheet,
+      'Empleados'
+    );
+
+    XLSX.writeFile(book, this.name);
+
+  }
+
 }

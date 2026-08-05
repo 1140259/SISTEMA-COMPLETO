@@ -1,0 +1,260 @@
+<div class="container-fluid bg-primary p-2 mb-3">
+
+  <div class="d-flex justify-content-end">
+
+    <a
+      routerLink="/inicio"
+      class="btn btn-light me-2">
+
+      🏠 Inicio
+
+    </a>
+
+    <a
+      routerLink="/reportes"
+      class="btn btn-warning me-2">
+
+      📊 Reportes
+
+    </a>
+
+    <a
+      routerLink="/"
+      class="btn btn-danger">
+
+      🚪 Salir
+
+    </a>
+
+  </div>
+
+</div>
+<div class="container-fluid mt-4">
+
+  <div class="card shadow-lg border-0">
+
+    <div class="card-header bg-primary text-white">
+      <h2 class="mb-0">
+        Gestión de Médicos
+      </h2>
+    </div>
+
+    <div class="card-body">
+
+      <div class="row g-4">
+
+        <div class="col-md-3">
+          <label class="form-label">
+            Código Médico
+          </label>
+
+          <input
+            class="form-control"
+            value="Automático"
+            readonly>
+        </div>
+
+        <div class="col-md-3">
+          <label class="form-label">
+            Nombres
+          </label>
+
+          <input
+            class="form-control"
+            [(ngModel)]="medico.NOMBRES">
+        </div>
+
+        <div class="col-md-3">
+          <label class="form-label">
+            Apellidos
+          </label>
+
+          <input
+            class="form-control"
+            [(ngModel)]="medico.APELLIDOS">
+        </div>
+
+        <div class="col-md-3">
+          <label class="form-label">
+            Especialidad
+          </label>
+
+          <select
+            class="form-select"
+            [(ngModel)]="medico.ID_ESPECIALIDAD">
+
+            <option value="">
+              Seleccione...
+            </option>
+
+            <option
+              *ngFor="let e of especialidades"
+              [value]="e.ID_ESPECIALIDAD">
+
+              {{ e.ESPECIALIDAD }}
+
+            </option>
+
+          </select>
+
+        </div>
+
+        <div class="col-md-4">
+
+          <label class="form-label">
+            Teléfono
+          </label>
+
+          <input
+            class="form-control"
+            [(ngModel)]="medico.TELEFONO">
+
+        </div>
+
+        <div class="col-md-4">
+
+          <label class="form-label">
+            Correo
+          </label>
+
+          <input
+            type="email"
+            class="form-control"
+            [(ngModel)]="medico.CORREO">
+
+        </div>
+
+        <div class="col-md-4">
+
+          <label class="form-label">
+            Estado
+          </label>
+
+          <select
+            class="form-select"
+            [(ngModel)]="medico.ESTADO">
+
+            <option value="ACTIVO">
+              ACTIVO
+            </option>
+
+            <option value="INACTIVO">
+              INACTIVO
+            </option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+      <div class="text-end mt-4">
+
+        <button
+          class="btn btn-secondary me-2"
+          (click)="limpiarFormulario()">
+
+          Nuevo
+
+        </button>
+
+        <button
+          class="btn btn-success"
+          (click)="saveMedico()">
+
+          {{ medico.ID_MEDICO ? 'Actualizar Médico' : 'Guardar Médico' }}
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="card shadow mt-4">
+
+    <div class="card-header bg-dark text-white">
+      <h4 class="mb-0">
+        Lista de Médicos
+      </h4>
+    </div>
+
+    <div class="card-body">
+
+      <input
+        type="text"
+        class="form-control mb-3"
+        placeholder="Buscar médico..."
+        [(ngModel)]="filtroMedico">
+
+      <div class="table-responsive">
+
+        <table class="table table-bordered table-striped">
+
+          <thead class="table-primary">
+
+            <tr>
+              <th>ID</th>
+              <th>Código</th>
+              <th>Nombre</th>
+              <th>Especialidad</th>
+              <th>Teléfono</th>
+              <th>Correo</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            <tr *ngFor="let m of medicosFiltrados">
+
+              <td>{{ m.ID_MEDICO }}</td>
+
+              <td>{{ m.CODIGO_MEDICO }}</td>
+
+              <td>{{ m.NOMBRES }} {{ m.APELLIDOS }}</td>
+
+              <td>{{ m.ESPECIALIDAD }}</td>
+
+              <td>{{ m.TELEFONO }}</td>
+
+              <td>{{ m.CORREO }}</td>
+
+              <td>{{ m.ESTADO }}</td>
+
+              <td>
+
+                <button
+                  class="btn btn-warning btn-sm me-1"
+                  (click)="editarMedico(m)">
+
+                  Editar
+
+                </button>
+
+                <button
+                  class="btn btn-danger btn-sm"
+                  (click)="eliminarMedico(m.ID_MEDICO)">
+
+                  Eliminar
+
+                </button>
+
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

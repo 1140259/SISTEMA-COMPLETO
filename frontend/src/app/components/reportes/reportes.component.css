@@ -1,0 +1,59 @@
+.container-fluid {
+    max-width: 1500px;
+}
+
+.card {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.resumen-card {
+    border-radius: 15px;
+    padding: 20px;
+    min-height: 120px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .15);
+}
+
+.resumen-card h5 {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.resumen-card h2 {
+    font-weight: bold;
+}
+
+.btn {
+    border-radius: 10px;
+}
+
+.table td,
+.table th {
+    vertical-align: middle;
+}
+
+@media print {
+
+    .no-print {
+        display: none !important;
+    }
+
+    body * {
+        visibility: hidden;
+    }
+
+    #areaReporte,
+    #areaReporte * {
+        visibility: visible;
+    }
+
+    #areaReporte {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        box-shadow: none;
+        border: none;
+    }
+
+}

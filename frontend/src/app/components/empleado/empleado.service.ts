@@ -6,27 +6,33 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class EmpleadoService {
-  private apiUrl = 'http://localhost:5000/api/empleados';
 
-  constructor(private http: HttpClient) { }
+  private apiUrl = 'http://localhost:5000/api/';
 
-  // 1. Obtener todos
+  constructor(
+    private http: HttpClient
+  ) { }
+
+  // 1. Obtener todos los empleados
   getEmpleados(): Observable<any> {
     return this.http.get(this.apiUrl);
   }
 
-  // 2. Agregar nuevo
+  // 2. Agregar nuevo empleado
   addEmpleado(empleado: any): Observable<any> {
     return this.http.post(this.apiUrl, empleado);
   }
 
-  // 3. Actualizar existente
-  updateEmpleado(id: any, empleado: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, empleado);
+  // 3. Actualizar empleado existente
+  updateEmpleado(id: number | string, empleado: any): Observable<any> {
+    const url = this.apiUrl.endsWith('/') ? `${this.apiUrl}${id}` : `${this.apiUrl}/${id}`;
+    return this.http.put(url, empleado);
   }
 
-  // 4. Eliminar
-  deleteEmpleado(id: any): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`);
+  // 4. Eliminar empleado
+  deleteEmpleado(id: number | string): Observable<any> {
+    const url = this.apiUrl.endsWith('/') ? `${this.apiUrl}${id}` : `${this.apiUrl}/${id}`;
+    return this.http.delete(url);
   }
+
 }

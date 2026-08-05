@@ -1,0 +1,263 @@
+<div class="container-fluid bg-primary p-2 mb-3">
+
+  <div class="d-flex justify-content-end">
+
+    <a routerLink="/inicio" class="btn btn-light me-2">
+      🏠 Inicio
+    </a>
+
+    <a routerLink="/reportes" class="btn btn-warning me-2">
+      📊 Reportes
+    </a>
+
+    <a routerLink="/" class="btn btn-danger">
+      🚪 Salir
+    </a>
+
+  </div>
+
+</div>
+<div class="container-fluid mt-4">
+
+  <div class="card shadow">
+
+    <div class="card-header bg-primary text-white">
+
+      <h3>Agenda - Citas Médicas</h3>
+
+    </div>
+
+    <div class="card-body">
+
+      <div class="row g-3">
+
+        <div class="col-md-4">
+
+          <label>Paciente</label>
+
+          <select
+            class="form-control"
+            [(ngModel)]="cita.ID_PACIENTE">
+
+            <option value="">
+              Seleccione paciente...
+            </option>
+
+            <option
+              *ngFor="let p of pacientes"
+              [value]="p.ID_PACIENTE">
+
+              {{ p.NOMBRES }} {{ p.APELLIDOS }}
+
+            </option>
+
+          </select>
+
+        </div>
+
+        <div class="col-md-4">
+
+          <label>Médico</label>
+
+          <select
+            class="form-control"
+            [(ngModel)]="cita.ID_MEDICO">
+
+            <option value="">
+              Seleccione médico...
+            </option>
+
+            <option
+              *ngFor="let m of medicos"
+              [value]="m.ID_MEDICO">
+
+              {{ m.NOMBRES }} {{ m.APELLIDOS }}
+
+            </option>
+
+          </select>
+
+        </div>
+
+        <div class="col-md-2">
+
+          <label>Fecha</label>
+
+          <input
+            type="date"
+            class="form-control"
+            [(ngModel)]="cita.FECHA">
+
+        </div>
+
+        <div class="col-md-2">
+
+          <label>Hora</label>
+
+          <input
+            type="time"
+            class="form-control"
+            [(ngModel)]="cita.HORA">
+
+        </div>
+
+        <div class="col-md-8">
+
+          <label>Motivo</label>
+
+          <input
+            class="form-control"
+            [(ngModel)]="cita.MOTIVO">
+
+        </div>
+
+        <div class="col-md-4">
+
+          <label>Estado</label>
+
+          <select
+            class="form-control"
+            [(ngModel)]="cita.ESTADO">
+
+            <option value="PENDIENTE">PENDIENTE</option>
+
+            <option value="ATENDIDA">ATENDIDA</option>
+
+            <option value="CANCELADA">CANCELADA</option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+      <br>
+
+      <button
+        class="btn btn-secondary me-2"
+        (click)="limpiarFormulario()">
+
+        Nuevo
+
+      </button>
+
+      <button
+        class="btn btn-success"
+        (click)="saveCita()">
+
+        {{ cita.ID_CITA ? 'Actualizar Cita' : 'Guardar Cita' }}
+
+      </button>
+
+    </div>
+
+  </div>
+
+  <div class="card shadow mt-4">
+
+    <div class="card-header bg-dark text-white">
+
+      <h4>Listado de Citas</h4>
+
+    </div>
+
+    <div class="card-body">
+
+      <input
+        class="form-control mb-3"
+        placeholder="Buscar cita..."
+        [(ngModel)]="filtroCita">
+
+      <table class="table table-bordered table-striped">
+
+        <thead class="table-primary">
+
+          <tr>
+
+            <th>ID</th>
+
+            <th>Fecha</th>
+
+            <th>Hora</th>
+
+            <th>Paciente</th>
+
+            <th>Médico</th>
+
+            <th>Motivo</th>
+
+            <th>Estado</th>
+
+            <th>Acciones</th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          <tr *ngFor="let c of citasFiltradas">
+
+            <td>{{ c.ID_CITA }}</td>
+
+            <td>{{ c.FECHA | date:'yyyy-MM-dd' }}</td>
+
+            <td>{{ c.HORA }}</td>
+
+            <td>
+              {{ c.PACIENTE_NOMBRES }}
+              {{ c.PACIENTE_APELLIDOS }}
+            </td>
+
+            <td>
+              {{ c.MEDICO_NOMBRES }}
+              {{ c.MEDICO_APELLIDOS }}
+            </td>
+
+            <td>{{ c.MOTIVO }}</td>
+
+            <td>{{ c.ESTADO }}</td>
+
+            <td>
+
+              <button
+                class="btn btn-warning btn-sm me-1"
+                (click)="editarCita(c)">
+
+                Editar
+
+              </button>
+
+              <button
+                class="btn btn-danger btn-sm"
+                (click)="eliminarCita(c.ID_CITA)">
+
+                Eliminar
+
+              </button>
+
+            </td>
+
+          </tr>
+
+          <tr *ngIf="citasFiltradas.length === 0">
+
+            <td
+              colspan="8"
+              class="text-center text-muted">
+
+              No hay citas registradas
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</div>

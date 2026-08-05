@@ -1,0 +1,434 @@
+<div class="container-fluid bg-primary p-2 mb-3">
+
+  <div class="d-flex justify-content-end">
+
+    <a
+      routerLink="/inicio"
+      class="btn btn-light me-2">
+
+      🏠 Inicio
+
+    </a>
+
+    <a
+      routerLink="/reportes"
+      class="btn btn-warning me-2">
+
+      📊 Reportes
+
+    </a>
+
+    <a
+      routerLink="/"
+      class="btn btn-danger">
+
+      🚪 Salir
+
+    </a>
+
+  </div>
+
+</div>
+<div class="container-fluid mt-4">
+
+  <div class="card shadow-lg border-0">
+
+    <div class="card-header bg-primary text-white">
+      <h2 class="mb-0">🩺 Ficha de Pacientes</h2>
+    </div>
+
+    <div class="card-body">
+
+      <div class="section-card info-general">
+
+        <h4 class="section-title">
+          Información General
+        </h4>
+
+        <div class="row g-4">
+
+          <div class="col-md-3">
+            <label class="form-label">Nro Documento</label>
+            <input
+              class="form-control"
+              [(ngModel)]="paciente.nro_documento">
+          </div>
+
+          <div class="col-md-3">
+            <label class="form-label">Nombres</label>
+            <input
+              class="form-control"
+              [(ngModel)]="paciente.nombres">
+          </div>
+
+          <div class="col-md-3">
+            <label class="form-label">Apellidos</label>
+            <input
+              class="form-control"
+              [(ngModel)]="paciente.apellidos">
+          </div>
+
+          <div class="col-md-3">
+            <label class="form-label">Fecha Nacimiento</label>
+            <input
+              type="date"
+              class="form-control"
+              [(ngModel)]="paciente.fecha_nacimiento">
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label">Sexo</label>
+
+            <select
+              class="form-select"
+              [(ngModel)]="paciente.id_sexo">
+
+              <option value="">Seleccione...</option>
+
+              <option
+                *ngFor="let sexo of SexoList"
+                [value]="sexo.ID_SEXO">
+
+                {{ sexo.SEXO }}
+
+              </option>
+
+            </select>
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label">Estado Civil</label>
+
+            <select
+              class="form-select"
+              [(ngModel)]="paciente.id_estadocivil">
+
+              <option value="">Seleccione...</option>
+
+              <option
+                *ngFor="let estado of EstadoCivilList"
+                [value]="estado.ID_ESTADOCIVIL">
+
+                {{ estado.ESTADOCIVIL }}
+
+              </option>
+
+            </select>
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label">Tipo Sangre</label>
+
+            <select
+              class="form-select"
+              [(ngModel)]="paciente.id_tiposangre">
+
+              <option value="">Seleccione...</option>
+
+              <option
+                *ngFor="let sangre of TipoSangreList"
+                [value]="sangre.ID_TIPOSANGRE">
+
+                {{ sangre.SANGRE }}
+
+              </option>
+
+            </select>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="section-card info-contacto">
+
+        <h4 class="section-title">
+          Información de Contacto
+        </h4>
+
+        <div class="row g-4">
+
+          <div class="col-md-4">
+            <label class="form-label">Teléfono</label>
+
+            <input
+              class="form-control"
+              [(ngModel)]="paciente.telefono">
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label">Celular</label>
+
+            <input
+              class="form-control"
+              [(ngModel)]="paciente.celular">
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label">Correo</label>
+
+            <input
+              type="email"
+              class="form-control"
+              [(ngModel)]="paciente.correo">
+          </div>
+
+          <div class="col-md-12">
+            <label class="form-label">Dirección</label>
+
+            <input
+              class="form-control"
+              [(ngModel)]="paciente.direccion">
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="section-card info-medica">
+
+        <h4 class="section-title">
+          Información Médica
+        </h4>
+
+        <div class="row g-4">
+
+          <div class="col-md-3">
+            <label class="form-label">Peso (Kg)</label>
+
+            <input
+              type="number"
+              class="form-control"
+              [(ngModel)]="paciente.peso">
+          </div>
+
+          <div class="col-md-3">
+            <label class="form-label">Estatura (m)</label>
+
+            <input
+              type="number"
+              step="0.01"
+              class="form-control"
+              [(ngModel)]="paciente.estatura">
+          </div>
+
+          <div class="col-md-3">
+            <label class="form-label">IMC</label>
+
+            <input
+              class="form-control"
+              [value]="calcularIMC()"
+              readonly>
+          </div>
+
+          <div class="col-md-3">
+            <label class="form-label">Clasificación</label>
+
+            <input
+              class="form-control"
+              [value]="clasificacionIMC()"
+              readonly>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Alergias</label>
+
+            <textarea
+              class="form-control"
+              rows="2"
+              [(ngModel)]="paciente.alergias"></textarea>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Enfermedades</label>
+
+            <textarea
+              class="form-control"
+              rows="2"
+              [(ngModel)]="paciente.enfermedades"></textarea>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Medicamentos</label>
+
+            <textarea
+              class="form-control"
+              rows="2"
+              [(ngModel)]="paciente.medicamentos"></textarea>
+          </div>
+
+          <div class="col-md-12">
+            <label class="form-label">Observaciones</label>
+
+            <textarea
+              class="form-control"
+              rows="3"
+              [(ngModel)]="paciente.observaciones"></textarea>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="text-end mt-4">
+
+        <button
+          class="btn btn-secondary btn-lg me-2"
+          (click)="limpiarFormulario()">
+
+          Nuevo
+
+        </button>
+
+        <button
+          class="btn btn-success btn-lg"
+          (click)="savePaciente()">
+
+          {{ paciente.ID_PACIENTE ? 'Actualizar Paciente' : 'Guardar Paciente' }}
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="card shadow mt-4">
+
+    <div class="card-header bg-dark text-white">
+      <h4 class="mb-0">📋 Lista de Pacientes</h4>
+    </div>
+
+    <div class="card-body">
+
+      <div class="row mb-3">
+
+        <div class="col-md-6">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Buscar por documento, nombre, teléfono, correo..."
+            [(ngModel)]="filtroPaciente">
+        </div>
+
+        <div class="col-md-6 text-end">
+
+          <button
+            class="btn btn-dark me-2"
+            (click)="openPDF()">
+
+            Exportar PDF
+
+          </button>
+
+          <button
+            class="btn btn-success"
+            (click)="exportToExcel()">
+
+            Exportar Excel
+
+          </button>
+
+        </div>
+
+      </div>
+
+      <div class="table-responsive">
+
+        <table
+          id="tablaPacientes"
+          class="table table-hover table-striped table-bordered">
+
+          <thead class="table-primary">
+
+            <tr>
+              <th>ID</th>
+              <th>Documento</th>
+              <th>Nombre Completo</th>
+              <th>Teléfono</th>
+              <th>Correo</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            <tr *ngFor="let p of pacientesFiltrados">
+
+              <td>{{ p.ID_PACIENTE }}</td>
+
+              <td>{{ p.NRO_DOCUMENTO }}</td>
+
+              <td>
+                {{ p.NOMBRES }}
+                {{ p.APELLIDOS }}
+              </td>
+
+              <td>{{ p.TELEFONO }}</td>
+
+              <td>{{ p.CORREO }}</td>
+
+              <td>
+
+                <span class="badge bg-success">
+                  {{ p.ESTADO }}
+                </span>
+
+              </td>
+
+    <td>
+
+  <button
+    class="btn btn-info btn-sm me-1"
+    (click)="verHistorial(p)">
+
+    Historial
+
+  </button>
+
+  <button
+    class="btn btn-warning btn-sm me-1"
+    (click)="editarPaciente(p)">
+
+    Editar
+
+  </button>
+
+  <button
+    class="btn btn-danger btn-sm"
+    (click)="eliminarPaciente(p.ID_PACIENTE)">
+
+    Eliminar
+
+  </button>
+
+</td>
+
+            </tr>
+
+            <tr *ngIf="pacientesFiltrados.length === 0">
+
+              <td
+                colspan="7"
+                class="text-center text-muted">
+
+                No hay pacientes registrados
+
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,38 @@
+.container-fluid {
+    max-width: 1400px;
+}
+
+.card {
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.card-header.bg-primary {
+    background: linear-gradient(
+        135deg,
+        #0d6efd,
+        #198754
+    ) !important;
+}
+
+.card-header.bg-dark {
+    background: linear-gradient(
+        135deg,
+        #212529,
+        #495057
+    ) !important;
+}
+
+.form-control {
+    border-radius: 10px;
+    min-height: 45px;
+}
+
+.btn {
+    border-radius: 10px;
+}
+
+.table td,
+.table th {
+    vertical-align: middle;
+}

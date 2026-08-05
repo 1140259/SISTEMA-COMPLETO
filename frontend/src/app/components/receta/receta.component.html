@@ -1,0 +1,310 @@
+<div class="container-fluid bg-primary p-2 mb-3">
+
+  <div class="d-flex justify-content-end">
+
+    <a
+      routerLink="/inicio"
+      class="btn btn-light me-2">
+
+      🏠 Inicio
+
+    </a>
+
+    <a
+      routerLink="/reportes"
+      class="btn btn-warning me-2">
+
+      📊 Reportes
+
+    </a>
+
+    <a
+      routerLink="/"
+      class="btn btn-danger">
+
+      🚪 Salir
+
+    </a>
+
+  </div>
+
+</div>
+
+<div class="container-fluid mt-4">
+
+  <div class="card shadow">
+
+    <div class="card-header bg-primary text-white">
+
+      <h3 class="mb-0">Recetas Médicas</h3>
+
+    </div>
+
+    <div class="card-body">
+
+      <div class="row">
+
+        <div class="col-md-12 mb-3">
+
+          <label class="form-label">
+            Consulta Médica
+          </label>
+
+          <select
+            class="form-select"
+            [(ngModel)]="receta.ID_CONSULTA"
+            (change)="seleccionarConsulta()">
+
+            <option value="">
+              Seleccione una consulta...
+            </option>
+
+            <option
+              *ngFor="let c of consultas"
+              [value]="c.ID_CONSULTA">
+
+              Consulta #{{ c.ID_CONSULTA }}
+              -
+              {{ c.PACIENTE_NOMBRES }}
+              {{ c.PACIENTE_APELLIDOS }}
+
+            </option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+      <div
+        *ngIf="consultaSeleccionada"
+        class="alert alert-info">
+
+        <strong>Paciente:</strong>
+
+        {{ consultaSeleccionada.PACIENTE_NOMBRES }}
+        {{ consultaSeleccionada.PACIENTE_APELLIDOS }}
+
+        <br>
+
+        <strong>Diagnóstico:</strong>
+
+        {{ consultaSeleccionada.DIAGNOSTICO }}
+
+      </div>
+
+      <div class="row">
+
+        <div class="col-md-3 mb-3">
+
+          <label class="form-label">
+            Medicamento
+          </label>
+
+          <input
+            class="form-control"
+            [(ngModel)]="detalle.MEDICAMENTO">
+
+        </div>
+
+        <div class="col-md-2 mb-3">
+
+          <label class="form-label">
+            Dosis
+          </label>
+
+          <input
+            class="form-control"
+            [(ngModel)]="detalle.DOSIS">
+
+        </div>
+
+        <div class="col-md-3 mb-3">
+
+          <label class="form-label">
+            Frecuencia
+          </label>
+
+          <input
+            class="form-control"
+            [(ngModel)]="detalle.FRECUENCIA">
+
+        </div>
+
+        <div class="col-md-2 mb-3">
+
+          <label class="form-label">
+            Días
+          </label>
+
+          <input
+            type="number"
+            class="form-control"
+            [(ngModel)]="detalle.DIAS">
+
+        </div>
+
+        <div class="col-md-2 mb-3">
+
+          <label class="form-label">
+            Acción
+          </label>
+
+          <button
+            class="btn btn-success w-100"
+            (click)="agregarMedicamento()">
+
+            Agregar
+
+          </button>
+
+        </div>
+
+      </div>
+
+      <table class="table table-bordered table-striped mt-3">
+
+        <thead class="table-dark">
+
+          <tr>
+
+            <th>Medicamento</th>
+            <th>Dosis</th>
+            <th>Frecuencia</th>
+            <th>Días</th>
+            <th>Acción</th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          <tr *ngFor="let d of receta.detalles; let i = index">
+
+            <td>{{ d.MEDICAMENTO }}</td>
+
+            <td>{{ d.DOSIS }}</td>
+
+            <td>{{ d.FRECUENCIA }}</td>
+
+            <td>{{ d.DIAS }}</td>
+
+            <td>
+
+              <button
+                class="btn btn-danger btn-sm"
+                (click)="eliminarMedicamento(i)">
+
+                Eliminar
+
+              </button>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+      <div class="mb-3">
+
+        <label class="form-label">
+
+          Indicaciones Generales
+
+        </label>
+
+        <textarea
+          rows="4"
+          class="form-control"
+          [(ngModel)]="receta.INDICACIONES"></textarea>
+
+      </div>
+
+      <button
+        class="btn btn-primary me-2"
+        (click)="guardarReceta()">
+
+        Guardar Receta
+
+      </button>
+
+      <button
+        class="btn btn-secondary"
+        (click)="nuevaReceta()">
+
+        Nueva
+
+      </button>
+
+    </div>
+
+  </div>
+
+  <div class="card shadow mt-4">
+
+    <div class="card-header bg-dark text-white">
+
+      <h4 class="mb-0">
+
+        Recetas Registradas
+
+      </h4>
+
+    </div>
+
+    <div class="card-body">
+
+      <table class="table table-bordered table-striped">
+
+        <thead class="table-dark">
+
+          <tr>
+
+            <th>ID</th>
+
+            <th>Consulta</th>
+
+            <th>Fecha</th>
+
+            <th>Acción</th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          <tr *ngFor="let r of recetas">
+
+            <td>{{ r.ID_RECETA }}</td>
+
+            <td>{{ r.ID_CONSULTA }}</td>
+
+            <td>{{ r.FECHA_RECETA | date:'yyyy-MM-dd' }}</td>
+
+            <td>
+
+              <a
+                class="btn btn-success btn-sm"
+                [routerLink]="['/receta-imprimir', r.ID_RECETA]">
+
+                🖨️ Imprimir
+
+              </a>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</div>

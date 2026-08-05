@@ -1,41 +1,123 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light px-3">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
   <div class="container-fluid">
-    <!-- Menú Principal: Sistema -->
-    <button mat-button [matMenuTriggerFor]="menuSistema">Sistema</button>
 
-    <mat-menu #menuSistema="matMenu">
-      <button mat-menu-item [matMenuTriggerFor]="subMenuEmpleados">Empleados</button>
-      <button mat-menu-item [matMenuTriggerFor]="subMenuOpcion2">Opcion2</button>
-    </mat-menu>
+    <a class="navbar-brand" routerLink="/inicio">
+      CLINICA MEDICA USAP
+    </a>
 
-    <!-- Submenú para Empleados -->
-    <mat-menu #subMenuEmpleados="matMenu">
-      <a mat-menu-item routerLink="/empleado">Ver Empleados</a>
-      <a mat-menu-item href="#">html2</a>
-      <a mat-menu-item href="#">html3</a>
-      <a mat-menu-item href="#">html4</a>
-      <a mat-menu-item href="#">html5</a>
-    </mat-menu>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarContent">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-    <!-- Submenú para Opcion 2 -->
-    <mat-menu #subMenuOpcion2="matMenu">
-      <a mat-menu-item href="#">html1</a>
-      <a mat-menu-item href="#">html2</a>
-      <a mat-menu-item href="#">html3</a>
-      <a mat-menu-item href="#">html4</a>
-      <a mat-menu-item href="#">html5</a>
-    </mat-menu>
+    <div class="collapse navbar-collapse" id="navbarContent">
+      <ul class="navbar-nav me-auto">
 
-    <!-- Menú Principal: Consultas -->
-    <button mat-button [matMenuTriggerFor]="menuConsultas">Consultas</button>
+        <!-- Mantenimiento -->
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle"
+            href="#"
+            role="button"
+            data-bs-toggle="dropdown">
+            ⚙️ Mantenimiento
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a class="dropdown-item" routerLink="/paciente">Pacientes</a>
+            </li>
+            <li>
+              <a class="dropdown-item" routerLink="/medico">Médicos</a>
+            </li>
+            <li>
+              <a class="dropdown-item" routerLink="/especialidad">Especialidades</a>
+            </li>
+          </ul>
+        </li>
 
-    <mat-menu #menuConsultas="matMenu">
-      <button mat-menu-item [matMenuTriggerFor]="subMenuConsultasOpcion1">Opcion1</button>
-    </mat-menu>
+        <!-- Atención Médica -->
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle"
+            href="#"
+            role="button"
+            data-bs-toggle="dropdown">
+            👨‍⚕️ Atención Médica
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a class="dropdown-item" routerLink="/consulta">Consulta Médica</a>
+            </li>
+            <li>
+              <a class="dropdown-item" routerLink="/diagnostico">Diagnóstico de Paciente</a>
+            </li>
+            <li>
+              <a class="dropdown-item" routerLink="/receta">Recetas Médicas</a>
+            </li>
+          </ul>
+        </li>
 
-    <mat-menu #subMenuConsultasOpcion1="matMenu">
-      <a mat-menu-item routerLink="/empleado">Empleados</a>
-    </mat-menu>
+        <!-- Agenda -->
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle"
+            href="#"
+            role="button"
+            data-bs-toggle="dropdown">
+            📅 Agenda
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a class="dropdown-item">Citas</a>
+            </li>
+            <li>
+              <a class="dropdown-item">Calendario Médico</a>
+            </li>
+            <li>
+              <a class="dropdown-item">Pacientes Pendientes</a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Reportes -->
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle"
+            href="#"
+            role="button"
+            data-bs-toggle="dropdown">
+            📊 Reportes
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a class="dropdown-item">Pacientes</a>
+            </li>
+            <li>
+              <a class="dropdown-item">Consultas</a>
+            </li>
+            <li>
+              <a class="dropdown-item">Recetas</a>
+            </li>
+            <li>
+              <a class="dropdown-item">Médicos</a>
+            </li>
+          </ul>
+        </li>
+
+      </ul>
+
+      <div class="d-flex">
+        <a routerLink="/inicio" class="btn btn-light me-2">
+          Inicio
+        </a>
+        <button class="btn btn-danger">
+          Salir
+        </button>
+      </div>
+    </div>
 
   </div>
 </nav>

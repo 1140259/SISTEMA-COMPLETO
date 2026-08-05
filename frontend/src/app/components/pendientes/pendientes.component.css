@@ -1,0 +1,11 @@
+.container-fluid {
+    max-width: 1400px;
+}
+
+.card {
+    border-radius: 15px;
+}
+
+.btn {
+    border-radius: 10px;
+}
